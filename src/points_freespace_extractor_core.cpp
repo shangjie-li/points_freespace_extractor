@@ -27,7 +27,7 @@ PointsFreespaceExtractor::~PointsFreespaceExtractor()
 {
 }
 
-void PointsFreespaceExtractor::convertPointCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr pc,
+void PointsFreespaceExtractor::convertPointCloud(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc,
                                                  std::vector<std::vector<PointXYZRTColor>>& pc_converted)
 {
     // floor(x)返回小于或等于x的最大整数
@@ -205,7 +205,7 @@ void PointsFreespaceExtractor::smoothFreespace(const std::vector<PointXYZRTColor
     }
 }
 
-void PointsFreespaceExtractor::extractFreespace(const pcl::PointCloud<pcl::PointXYZ>::Ptr pc_freespace,
+void PointsFreespaceExtractor::extractFreespace(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc_freespace,
                                                 visualization_msgs::Marker& region)
 {
     std::vector<PointXYZRTColor> space;
@@ -314,8 +314,8 @@ void PointsFreespaceExtractor::callback(const sensor_msgs::PointCloud2ConstPtr p
 {
     ros::Time time_start = ros::Time::now();
     
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pc_current(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pc_freespace(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr pc_current(new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr pc_freespace(new pcl::PointCloud<pcl::PointXYZI>);
     pcl::fromROSMsg(*pc_msg, *pc_current);
     
     // 组织点云
@@ -326,7 +326,7 @@ void PointsFreespaceExtractor::callback(const sensor_msgs::PointCloud2ConstPtr p
     pcl::PointIndices freespace_indices;
     classifyPointCloud(pc_organized, freespace_indices);
     
-    pcl::ExtractIndices<pcl::PointXYZ> extractor_freespace;
+    pcl::ExtractIndices<pcl::PointXYZI> extractor_freespace;
     extractor_freespace.setInputCloud(pc_current);
     extractor_freespace.setIndices(boost::make_shared<pcl::PointIndices>(freespace_indices));
     extractor_freespace.setNegative(false); // true removes the indices, false leaves only the indices

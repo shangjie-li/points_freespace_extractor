@@ -42,7 +42,7 @@ private:
     
     struct PointXYZRTColor
     {
-        pcl::PointXYZ point;
+        pcl::PointXYZI point;
 
         float radius; // radius to (0, 0)
         float theta;  // polar angle in XY plane
@@ -56,7 +56,7 @@ private:
     std::vector<PointXYZRTColor> last_space_;
     bool filter_initialized_;
     
-    void convertPointCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr pc,
+    void convertPointCloud(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc,
                            std::vector<std::vector<PointXYZRTColor>>& pc_converted);
     
     void classifyPointCloud(const std::vector<std::vector<PointXYZRTColor>>& pc,
@@ -65,7 +65,7 @@ private:
                                         std::vector<PointXYZRTColor>& pc_refined);
     void smoothFreespace(const std::vector<PointXYZRTColor>& pc,
                          std::vector<PointXYZRTColor>& pc_smoothed);
-    void extractFreespace(const pcl::PointCloud<pcl::PointXYZ>::Ptr pc_freespace,
+    void extractFreespace(const pcl::PointCloud<pcl::PointXYZI>::Ptr pc_freespace,
                           visualization_msgs::Marker& region);
     void callback(const sensor_msgs::PointCloud2ConstPtr pc_msg);
 
